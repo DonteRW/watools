@@ -15,6 +15,7 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 *.pyc
+WebAccounts.py
 
 # Windows shortcuts
 *.lnk
