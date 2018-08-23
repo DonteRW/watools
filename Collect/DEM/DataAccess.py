@@ -14,6 +14,7 @@ import urllib
 import shutil
 import gdal
 import glob
+import sys
 
 # WA+ modules
 import watools.General.raster_conversions as RC
@@ -412,7 +413,10 @@ def Download_Data(nameFile, output_folder_trash, parameter,para_name,resolution)
                 url="https://earlywarning.usgs.gov/hydrodata/sa_%s_zip_grid/%s" %(resolution,nameFile)
             file_name = url.split('/')[-1]
             output_file = os.path.join(output_folder_trash, file_name)
-            urllib.request.urlretrieve(url, output_file)
+            if sys.version_info[0] == 3:
+                urllib.request.urlretrieve(url, output_file)
+            if sys.version_info[0] == 2:
+                urllib.urlretrieve(url, output_file)
             size_data	= int(os.stat(output_file).st_size)
 
             if  size_data > 10000:
@@ -432,7 +436,10 @@ def Download_Data(nameFile, output_folder_trash, parameter,para_name,resolution)
                     url="https://earlywarning.usgs.gov/hydrodata/sa_%s_zip_grid/%s" %(resolution,nameFile)
                 file_name = url.split('/')[-1]
                 output_file = os.path.join(output_folder_trash, file_name)
-                urllib.request.urlretrieve(url, output_file)
+                if sys.version_info[0] == 3:
+                    urllib.request.urlretrieve(url, output_file)
+                if sys.version_info[0] == 2:
+                    urllib.urlretrieve(url, output_file)
 
                 if int(os.stat(output_file).st_size) > 10000:
                     break

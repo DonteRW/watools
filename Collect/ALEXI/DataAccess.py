@@ -274,7 +274,7 @@ def Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename, lonlim, latlim
 
         raw_data = np.fromfile(os.path.splitext(local_filename)[0], dtype="<f4")
         dataset = np.flipud(np.resize(raw_data, [3000,7200]))
-        data = dataset[yID[0]:yID[1],xID[0]:xID[1]]
+        data = dataset[yID[0]:yID[1],xID[0]:xID[1]] / 2.45                      # Values are in MJ/m2d so convert to mm/d
         data[data < 0] = -9999
 
     # make geotiff file

@@ -74,7 +74,7 @@ def Get_Array(nc_filename_waterpix, Var_name, Example_dataset, Startdate, Enddat
     row = int(len(lat))
     y_diff = (lat[0] - lat[-1])/(row - 1)
     x_diff = (lon[0] - lon[-1])/(col - 1)
-    geo = tuple([lon[0]+0.5*x_diff, -x_diff, 0.0, lat[0]+0.5*y_diff, 0.0, -y_diff])
+    geo = tuple([lon[0] + 0.5 * x_diff, -x_diff, 0.0, lat[0] + 0.5 * y_diff, 0.0, -y_diff])
 
     # Find example raster parameters
     geo_out, proj, size_X, size_Y = RC.Open_array_info(Example_dataset)
@@ -83,7 +83,7 @@ def Get_Array(nc_filename_waterpix, Var_name, Example_dataset, Startdate, Enddat
     Array_End = np.zeros([int(data_filled.shape[2]), size_Y, size_X])
 
     # Loop over time and add one time period at the time to end array
-    for i in range(1,int(data_filled.shape[2])):
+    for i in range(0,int(data_filled.shape[2])):
 
         # Create Memory file containing WaterPIX data
         mem_drv = gdal.GetDriverByName('MEM')
@@ -94,14 +94,14 @@ def Get_Array(nc_filename_waterpix, Var_name, Example_dataset, Startdate, Enddat
         srse = osr.SpatialReference()
         srse.SetWellKnownGeogCS("WGS84")
         dest.SetProjection(srse.ExportToWkt())
-        dest.GetRasterBand(1).WriteArray(data_filled[:,:,i-1])
+        dest.GetRasterBand(1).WriteArray(data_filled[:,:,i])
         dest.GetRasterBand(1).SetNoDataValue(-9999)
 
         # reproject the WaterPIX raster to the example raster
         dest_out = RC.reproject_dataset_example(dest, Example_dataset)
 
         # Write the raster array to the end raster
-        Array_End[i-1,:,:] = dest_out.GetRasterBand(1).ReadAsArray()
+        Array_End[i,:,:] = dest_out.GetRasterBand(1).ReadAsArray()
 
     # Set nan value to 0
     Array_End[np.isnan(Array_End)] = 0

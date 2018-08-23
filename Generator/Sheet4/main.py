@@ -159,7 +159,7 @@ def Calculate(WA_HOME_folder, Basin, P_Product, ET_Product, LAI_Product, ETref_P
         # 5.) Grey Water Footprint data
         if not "Theta_Saturated_Topsoil" in Variables_NC:
             # Get the data of grey water footprint and save as nc
-            ThetaSat_Filepath = os.path.join(Dir_Basin, Data_Path_ThetaSat_topsoil, "wcsat_topsoil.tif")
+            ThetaSat_Filepath = os.path.join(Dir_Basin, Data_Path_ThetaSat_topsoil, "Theta_Saturated_Topsoil_HiHydroSoil.tif")
             dest_ThetaSat = RC.reproject_dataset_example(ThetaSat_Filepath, Example_dataset, method=1)
             DataCube_ThetaSat = dest_ThetaSat.GetRasterBand(1).ReadAsArray()
             DC.Add_NC_Array_Static(nc_outname, DataCube_ThetaSat, "Theta_Saturated_Topsoil", "fraction", 0.0001)

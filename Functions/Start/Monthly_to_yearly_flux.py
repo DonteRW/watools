@@ -59,7 +59,7 @@ def Nearest_Interpolate(Dir_in, Startdate, Enddate, Dir_out = None):
         Year_data = np.zeros([size_Y, size_X])
 
         if len(files_one_year) is not int(12):
-            print("One month is missing!")
+            print("One month in year %s is missing!" %Year)
 
         for file_one_year in files_one_year:
             file_path = os.path.join(Dir_in, file_one_year)
@@ -71,7 +71,9 @@ def Nearest_Interpolate(Dir_in, Startdate, Enddate, Dir_out = None):
 
         # Define output directory
         if Dir_out == None:
-             Dir_out = Dir_in
+            Dir_out = Dir_in
+        if not os.path.exists(Dir_out):
+            os.makedirs(Dir_out)
 
         # Define output name
         output_name = os.path.join(Dir_out, file_one_year.replace('monthly', 'yearly').replace('month','year'))

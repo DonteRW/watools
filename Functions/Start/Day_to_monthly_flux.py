@@ -54,6 +54,14 @@ def Nearest_Interpolate(Dir_in, Startdate, Enddate, Dir_out=None):
     dest = gdal.Open(files[0])
     NDV = dest.GetRasterBand(1).GetNoDataValue()
 
+    # Define output directory
+    if Dir_out is None:
+	     Dir_out = Dir_in
+
+    if not os.path.exists(Dir_out):
+	     os.makedirs(Dir_out)
+
+    # loop over the months and sum the days
     for date in Dates:
         Year = date.year
         Month = date.month
@@ -66,7 +74,7 @@ def Nearest_Interpolate(Dir_in, Startdate, Enddate, Dir_out=None):
         Amount_days_in_month = int(calendar.monthrange(Year, Month)[1])
 
         if len(files_one_year) is not Amount_days_in_month:
-            print("One day is missing!!!")
+            print("One day is missing!!! month %s year %s" %(Month, Year))
 
         for file_one_year in files_one_year:
             file_path = os.path.join(Dir_in, file_one_year)
@@ -75,10 +83,6 @@ def Nearest_Interpolate(Dir_in, Startdate, Enddate, Dir_out=None):
             Day_data[np.isnan(Day_data)] = 0.0
             Day_data[Day_data == -9999] = 0.0
             Month_data += Day_data
-
-        # Define output directory
-        if Dir_out is None:
-            Dir_out = Dir_in
 
         # Define output name
         output_name = os.path.join(Dir_out, file_one_year

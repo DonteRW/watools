@@ -12,6 +12,7 @@ import pandas as pd
 import numpy as np
 import datetime
 import os
+import sys
 import matplotlib.pyplot as plt
 
 def ITE(Dir_Basin, nc_outname, Startdate, Enddate, Simulation):
@@ -53,8 +54,13 @@ def ITE(Dir_Basin, nc_outname, Startdate, Enddate, Simulation):
     LU = RC.Open_nc_array(nc_outname, Var = 'Landuse')
 
     # Create a mask to ignore non relevant pixels.
-    lulc_dict = list(GD.get_lulcs().keys())
-    mask=np.logical_or.reduce([LU == value for value in lulc_dict[1:]])
+    if sys.version_info[0] == 2:
+        lulc_dict = GD.get_lulcs().keys()
+        mask=np.logical_or.reduce([LU == value for value in lulc_dict[:-1]])
+    if sys.version_info[0] == 3:
+        lulc_dict = list(GD.get_lulcs().keys())
+        mask=np.logical_or.reduce([LU == value for value in lulc_dict[1:]])
+
     mask3d = mask * np.ones(len(Dates))[:,None,None]
     mask3d_neg = (mask3d-1) * 9999
 
