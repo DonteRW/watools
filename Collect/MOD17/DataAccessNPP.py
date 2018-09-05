@@ -180,7 +180,8 @@ def Collect_data(TilesHorizontal,TilesVertical,Date,output_folder, hdf_library):
 
             # Download the MODIS NPP data
             #url = 'https://e4ftl01.cr.usgs.gov/MOLT/MOD17A3H.006/' + Date.strftime('%Y') + '.' + Date.strftime('%m') + '.' + Date.strftime('%d') + '/'
-            url = 'https://e4ftl01.cr.usgs.gov/MOLT/MOD17A3.055/' + Date.strftime('%Y') + '.' + Date.strftime('%m') + '.' + Date.strftime('%d') + '/'
+            #url = 'https://e4ftl01.cr.usgs.gov/MOLT/MOD17A3.055/' + Date.strftime('%Y') + '.' + Date.strftime('%m') + '.' + Date.strftime('%d') + '/'
+            url = 'http://files.ntsg.umt.edu/data/NTSG_Products/MOD17/MOD17A3/Y' + Date.strftime('%Y') + '/'
 
 		      # Reset the begin parameters for downloading
             downloaded = 0
@@ -212,8 +213,8 @@ def Collect_data(TilesHorizontal,TilesVertical,Date,output_folder, hdf_library):
                 for i in soup.findAll('a', attrs = {'href': re.compile('(?i)(hdf)$')}):
 
                     # Find the file with the wanted tile number
-                    Vfile=str(i)[30:32]
-                    Hfile=str(i)[27:29]
+                    Vfile=str(i)[-28:-26]
+                    Hfile=str(i)[-31:-29]
                     if int(Vfile) is int(Vertical) and int(Hfile) is int(Horizontal):
 
                         # Define the whole url name
@@ -233,6 +234,7 @@ def Collect_data(TilesHorizontal,TilesVertical,Date,output_folder, hdf_library):
                                     print("file ", file_name, " already exists")
                                     downloaded = 1
                                 else:
+                                    """
                                     x = requests.get(nameDownload, allow_redirects = False)
                                     try:
                                         y = requests.get(x.headers['location'], auth = (username, password))
@@ -241,9 +243,14 @@ def Collect_data(TilesHorizontal,TilesVertical,Date,output_folder, hdf_library):
                                         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
                                         y = requests.get(x.headers['location'], auth = (username, password), verify = False)
+
                                     z = open(file_name, 'wb')
                                     z.write(y.content)
                                     z.close()
+                                    """
+
+                                    urllib.urlretrieve(nameDownload, file_name)
+
                                     statinfo = os.stat(file_name)
                                     # Say that download was succesfull
                                     if int(statinfo.st_size) > 10000:
