@@ -248,9 +248,10 @@ def Collect_data(TilesHorizontal,TilesVertical,Date,output_folder, hdf_library):
                                     z.write(y.content)
                                     z.close()
                                     """
-
-                                    urllib.urlretrieve(nameDownload, file_name)
-
+                                    if sys.version_info[0] == 2:
+                                        urllib.urlretrieve(nameDownload, file_name)
+                                    if sys.version_info[0] == 3:
+                                        urllib.request.urlretrieve(nameDownload, file_name)
                                     statinfo = os.stat(file_name)
                                     # Say that download was succesfull
                                     if int(statinfo.st_size) > 10000:
