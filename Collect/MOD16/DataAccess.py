@@ -225,7 +225,10 @@ def Collect_data(TilesHorizontal,TilesVertical,Date,output_folder,timestep, hdf_
 
                                 while downloaded == 0:
 
-                                    urllib.urlretrieve(HTTP_name,output_name)
+                                    if sys.version_info[0] == 2:
+                                        urllib.urlretrieve(HTTP_name,output_name)
+                                    if sys.version_info[0] == 3:
+                                        urllib.request.urlretrieve(HTTP_name,output_name)
 
                                     statinfo = os.stat(output_name)
                                     # Say that download was succesfull

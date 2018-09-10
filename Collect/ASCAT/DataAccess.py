@@ -74,7 +74,7 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, Waitbar):
 
     # Create Waitbar
     if Waitbar == 1:
-        import wa.Functions.Start.WaitbarConsole as WaitbarConsole
+        import watools.Functions.Start.WaitbarConsole as WaitbarConsole
         total_amount = len(Dates)
         amount = 0
         WaitbarConsole.printWaitBar(amount, total_amount, prefix='Progress:',

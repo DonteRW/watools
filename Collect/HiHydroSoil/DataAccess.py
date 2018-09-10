@@ -118,7 +118,7 @@ def Download_HiHydroSoil_from_WA_FTP(local_filename, Filename_in):
 
 def Clip_Dataset(local_filename, Filename_out, latlim, lonlim):
 
-    import wa.General.raster_conversions as RC
+    import watools.General.raster_conversions as RC
 
     # Open Dataset
     HiHydroSoil_Array = RC.Open_tiff_array(local_filename)
