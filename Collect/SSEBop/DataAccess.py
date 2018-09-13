@@ -28,8 +28,11 @@ import numpy as np
 import os
 import pandas as pd
 from ftplib import FTP
-import urllib
-
+import sys
+if sys.version_info[0] == 3:
+    import urllib.parse
+if sys.version_info[0] == 2:
+    import urllib
 # Water Accounting Modules
 import watools.WebAccounts as WebAccounts
 import watools.General.raster_conversions as RC
@@ -90,7 +93,7 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, Waitbar, version):
 
     # Create Waitbar
     if Waitbar == 1:
-        import wa.Functions.Start.WaitbarConsole as WaitbarConsole
+        import watools.Functions.Start.WaitbarConsole as WaitbarConsole
         total_amount = len(Dates)
         amount = 0
         WaitbarConsole.printWaitBar(amount, total_amount, prefix = 'Progress:', suffix = 'Complete', length = 50)
@@ -204,7 +207,10 @@ def Download_SSEBop_from_Web(output_folder, Filename_only_zip):
     total_URL = "https://edcintl.cr.usgs.gov/downloads/sciweb1/shared/fews/web/global/monthly/eta/downloads/" + str(Filename_only_zip)
 
     # Download the data
-    urllib.urlretrieve(total_URL, os.path.join(output_folder, Filename_only_zip))
+    if sys.version_info[0] == 2:
+        urllib.urlretrieve(total_URL, os.path.join(output_folder, Filename_only_zip))
+    if sys.version_info[0] == 3:
+        urllib.request.urlretrieve(total_URL, os.path.join(output_folder, Filename_only_zip)) 
 
     # unzip the file
     DC.Extract_Data(os.path.join(output_folder, Filename_only_zip), output_folder)
