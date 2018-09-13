@@ -9,6 +9,7 @@ import glob
 import gdal
 import osr
 import os
+import sys
 import numpy as np
 import subprocess
 from pyproj import Proj, transform
@@ -589,12 +590,15 @@ def resize_array_example(Array_in, Array_example, method=1):
 
     if method == 1:
         interpolation_method='nearest'
+        interpolation_number = 0
     if method == 2:
         interpolation_method='bicubic'
+        interpolation_number = 3
     if method == 3:
         interpolation_method='bilinear'
+        interpolation_number = 1   
     if method == 4:
-        interpolation_method='cubic'
+        interpolation_method='cubic'     
     if method == 5:
         interpolation_method='lanczos'
 
@@ -605,14 +609,25 @@ def resize_array_example(Array_in, Array_example, method=1):
             Array_in_slice = Array_in[i,:,:]
             size=tuple(Array_out_shape[1:])
 
-            Array_out_slice=scipy.misc.imresize(np.float_(Array_in_slice), size, interp=interpolation_method, mode='F')
+            if sys.version_info[0] == 2:
+                import scipy.misc as misc
+                Array_out_slice= misc.imresize(np.float_(Array_in_slice), size, interp=interpolation_method, mode='F')
+            if sys.version_info[0] == 3:
+                import skimage.transform as transform
+                Array_out_slice= transform.resize(np.float_(Array_in_slice), size, order=interpolation_number)
+                
             Array_out[i,:,:] = Array_out_slice
 
     elif len(Array_out_shape) == 2:
 
         size=tuple(Array_out_shape)
-        Array_out=scipy.misc.imresize(np.float_(Array_in), size, interp=interpolation_method, mode='F')
-
+        if sys.version_info[0] == 2:
+            import scipy.misc as misc
+            Array_out= misc.imresize(np.float_(Array_in), size, interp=interpolation_method, mode='F')
+        if sys.version_info[0] == 3:
+            import skimage.transform as transform
+            Array_out= transform.resize(np.float_(Array_in), size, order=interpolation_number)
+      
     else:
         print('only 2D or 3D dimensions are supported')
 
