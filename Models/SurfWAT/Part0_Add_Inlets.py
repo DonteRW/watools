@@ -11,7 +11,7 @@ def run(input_nc, Inflow_Text_Files):
     The inflow must be a text file with a certain format. The first line of this format are the latitude and longitude.
     Hereafter for each line the time (ordinal time) and the inflow (m3/month) seperated with one space is defined. See example below:
 
-    [lat lon]
+    lat lon
     733042 156225.12
     733073 32511321.2
     733102 212315.25
@@ -40,8 +40,8 @@ def run(input_nc, Inflow_Text_Files):
 
         # Read out the coordinates
         Coord = Inlet[0,:]
-        Lon_coord = Coord[0][1:]
-        Lat_coord = Coord[1][:-1]
+        Lon_coord = Coord[0]
+        Lat_coord = Coord[1]
 
         # Search for the pixel
         lon_pix = int(np.ceil((float(Lon_coord) - geo_out[0])/geo_out[1]))

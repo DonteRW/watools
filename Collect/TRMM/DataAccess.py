@@ -54,7 +54,7 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, Waitbar, cores, TimeCa
 
     # Create Waitbar
     if Waitbar == 1:
-        import wa.Functions.Start.WaitbarConsole as WaitbarConsole
+        import watools.Functions.Start.WaitbarConsole as WaitbarConsole
         total_amount = len(Dates)
         amount = 0
         WaitbarConsole.printWaitBar(amount, total_amount, prefix = 'Progress:', suffix = 'Complete', length = 50)
@@ -109,7 +109,7 @@ def RetrieveData(Date, args):
     month= Date.month
     day = Date.day
 
-    from wa import WebAccounts
+    from watools import WebAccounts
     username, password = WebAccounts.Accounts(Type = 'NASA')
 
     # Create https
@@ -139,7 +139,7 @@ def RetrieveData(Date, args):
 
         # download data (first save as text file)
         pathtext = os.path.join(output_folder,'temp.txt')
-        z = open(pathtext,'w')
+        z = open(pathtext,'wb')
         z.write(get_dataset.content)
         z.close()
 
